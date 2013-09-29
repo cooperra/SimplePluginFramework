@@ -2,7 +2,16 @@
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 
-
+/**
+ * This is an abstract template class to be extended to make simple plugins. 
+ * Plugins that use this template only need to define their Id, version, and event listeners.
+ * Plugins can access the api variable (via super.api) to use the PluginAPI object. 
+ * 
+ * Anything more complex than this should implement IPlugin directly. 
+ * 
+ * @author cooperra
+ *
+ */
 public abstract class TemplatePlugin implements IPlugin {
 	protected PluginAPI api;
 	
