@@ -224,7 +224,7 @@ public class PlugInLoader {
 	
 	public static void main(String[] args) throws IOException {
 
-		pluginDirectory = "src\\plugins";
+		pluginDirectory = "bin";
 		findPlugins();
 		
 		if(listOfPlugins.isEmpty()){

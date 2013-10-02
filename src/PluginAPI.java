@@ -38,7 +38,7 @@ public class PluginAPI {
 	 * @return true if unregistration successful, false otherwise
 	 */
 	public boolean unregisterEvent(String eventName) {
-		return em.unregisterEvent(eventName, plugin.getId());
+		return em.unRegisterEvent(eventName, plugin.getId());
 	}
 	
 	/**
