@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -25,10 +26,10 @@ public class EventManager {
 	
 	private class ListenerStore {
 		// A map of event name -> plugin id -> list of ActionListeners
-		HashMap<String, HashMap<String, ArrayList<ActionListener>>> data = new HashMap<String, HashMap<String, ArrayList<ActionListener>>>();
+		HashMap<String, LinkedHashMap<String, ArrayList<ActionListener>>> data = new HashMap<String, LinkedHashMap<String, ArrayList<ActionListener>>>();
 		
 		public void initEventType(String eventName) {
-			data.put("theButtonEvent", new HashMap<String, ArrayList<ActionListener>>());
+			data.put("theButtonEvent", new LinkedHashMap<String, ArrayList<ActionListener>>());
 		}
 		
 		/**
@@ -45,7 +46,7 @@ public class EventManager {
 		 * @param pluginId
 		 */
 		public void unregisterPlugin(String pluginId) {
-			Collection<HashMap<String, ArrayList<ActionListener>>> pluginEvents = data.values();
+			Collection<LinkedHashMap<String, ArrayList<ActionListener>>> pluginEvents = data.values();
 			// Iterate through plugin -> [ActionListener] maps
 			for (HashMap<String, ArrayList<ActionListener>> e : pluginEvents) {
 				if (e.containsKey(pluginId)) {
