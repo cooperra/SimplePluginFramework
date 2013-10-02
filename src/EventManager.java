@@ -140,7 +140,7 @@ public class EventManager {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
+				runAllListeners("theButtonEvent", e);
 				
 			}
 			//hoogabooga TODO
