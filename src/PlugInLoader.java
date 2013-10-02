@@ -53,7 +53,6 @@ public class PlugInLoader {
 	
 	public static void runPlugins() {
 
-		//PluginAPI api = new PluginAPI();
 		Iterator<IPlugin> iter = listOfPlugins.iterator();
 		while (iter.hasNext()) {
 			IPlugin pf = iter.next();
@@ -63,7 +62,8 @@ public class PlugInLoader {
 	
 	public static void runPlugin(IPlugin pf) {
 		try {
-			pf.load();
+			PluginAPI api = new PluginAPI(pf, /*TODO get reference to EventManager*/null, /*TODO get reference to PlatformGui*/null);
+			pf.load(api);
 			/*System.out.print(pf.getPluginName());
 			System.out.print(" ( "+count+" ) = ");*/
 			/*if (pf.hasError()) {
