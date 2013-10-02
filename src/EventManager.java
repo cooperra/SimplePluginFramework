@@ -74,8 +74,12 @@ public class EventManager {
 			}
 		}
 		
-		public ArrayList<ActionListener> getListenersByEvent(String eventName) {
-			return null; // TODO implement
+		public ArrayList<ActionListener> getAllListenersByEvent(String eventName) {
+			ArrayList<ActionListener> allListeners = new ArrayList<ActionListener>(); 
+			for (ArrayList<ActionListener> partialList : data.get(eventName).values()) {
+				allListeners.addAll(partialList);
+			}
+			return allListeners;
 		}
 	}
 	
