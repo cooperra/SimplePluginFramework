@@ -57,23 +57,27 @@ public class PlugInLoader {
 		Iterator<IPlugin> iter = listOfPlugins.iterator();
 		while (iter.hasNext()) {
 			IPlugin pf = iter.next();
-			try {
-				pf.load();
-				/*System.out.print(pf.getPluginName());
-				System.out.print(" ( "+count+" ) = ");*/
-				/*if (pf.hasError()) {
-					System.out.println("there was an error during plugin initialization");
-					continue;
-				}
-				int result = pf.getResult();
-				if (pf.hasError())
-					System.out.println("there was an error during plugin execution");
-				else
-					System.out.println(result);
-				count++;*/
-			} catch (SecurityException secEx) {
-				System.err.println("plugin '"+pf.getClass().getName()+"' tried to do something illegal");
+			runPlugin(pf);
+		}
+	}
+	
+	public static void runPlugin(IPlugin pf) {
+		try {
+			pf.load();
+			/*System.out.print(pf.getPluginName());
+			System.out.print(" ( "+count+" ) = ");*/
+			/*if (pf.hasError()) {
+				System.out.println("there was an error during plugin initialization");
+				continue;
 			}
+			int result = pf.getResult();
+			if (pf.hasError())
+				System.out.println("there was an error during plugin execution");
+			else
+				System.out.println(result);
+			count++;*/
+		} catch (SecurityException secEx) {
+			System.err.println("plugin '"+pf.getClass().getName()+"' tried to do something illegal");
 		}
 	}
 	
