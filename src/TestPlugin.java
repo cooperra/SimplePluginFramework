@@ -34,6 +34,12 @@ public class TestPlugin extends TemplatePlugin {
 		
 	}
 
+	@Override
+	public boolean load() {
+		System.out.println("Hello, World!");
+		return false;
+	}
+
 	
 
 }
