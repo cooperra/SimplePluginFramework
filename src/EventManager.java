@@ -147,4 +147,15 @@ public class EventManager {
 		});
 	}
 	
+	/**
+	 * Runs all registered eventListeners under the given eventName for the given event instance.  
+	 * @param eventName
+	 * @param e
+	 */
+	private void runAllListeners(String eventName, ActionEvent e) {
+		for (ActionListener listener : eventRegistry.getAllListenersByEvent(eventName)) {
+			listener.actionPerformed(e);
+		}
+	}
+	
 }
