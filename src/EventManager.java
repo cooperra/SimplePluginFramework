@@ -21,66 +21,70 @@ import java.util.Set;
  */
 public class EventManager {
 	
-	// A map of event name -> plugin id -> list of ActionListeners
-	HashMap<String, HashMap<String, ArrayList<ActionListener>>> registeredEvents = new HashMap<String, HashMap<String, ArrayList<ActionListener>>>();
+	ListenerStore eventRegistry = new ListenerStore();
 	
-	private void initEventType(String eventName) {
-		registeredEvents.put("theButtonEvent", new HashMap<String, ArrayList<ActionListener>>());
-	}
-	
-	/**
-	 * Unregisters all events of a given type owned by a given plugin
-	 * @param pluginId
-	 * @param eventName
-	 */
-	private void unregisterEventHelper(String pluginId, String eventName) {
-		registeredEvents.get(eventName).remove(pluginId);
-	}
-	
-	/**
-	 * Unregisters all events owned by a particular plugin
-	 * @param pluginId
-	 */
-	private void unregisterPluginHelper(String pluginId) {
-		Collection<HashMap<String, ArrayList<ActionListener>>> pluginEvents = registeredEvents.values();
-		// Iterate through plugin -> [ActionListener] maps
-		for (HashMap<String, ArrayList<ActionListener>> e : pluginEvents) {
-			if (e.containsKey(pluginId)) {
-				// if a list of ActionListeners exists for this plugin, remove it
-				e.remove(pluginId);
+	private class ListenerStore {
+		// A map of event name -> plugin id -> list of ActionListeners
+		HashMap<String, HashMap<String, ArrayList<ActionListener>>> data = new HashMap<String, HashMap<String, ArrayList<ActionListener>>>();
+		
+		public void initEventType(String eventName) {
+			data.put("theButtonEvent", new HashMap<String, ArrayList<ActionListener>>());
+		}
+		
+		/**
+		 * Unregisters all events of a given type owned by a given plugin
+		 * @param pluginId
+		 * @param eventName
+		 */
+		public void unregisterEvent(String pluginId, String eventName) {
+			data.get(eventName).remove(pluginId);
+		}
+		
+		/**
+		 * Unregisters all events owned by a particular plugin
+		 * @param pluginId
+		 */
+		public void unregisterPlugin(String pluginId) {
+			Collection<HashMap<String, ArrayList<ActionListener>>> pluginEvents = data.values();
+			// Iterate through plugin -> [ActionListener] maps
+			for (HashMap<String, ArrayList<ActionListener>> e : pluginEvents) {
+				if (e.containsKey(pluginId)) {
+					// if a list of ActionListeners exists for this plugin, remove it
+					e.remove(pluginId);
+				}
 			}
 		}
-	}
-	
-	// this is separated into a helper in case we split the event data structure into another class
-	private boolean registerEventHelper(String eventName, String pluginId, ActionListener al) {
-		//make sure eventName is valid
-		if (eventName == null || !registeredEvents.containsKey(eventName)) {
-			return false;
-		} else {
-			HashMap<String, ArrayList<ActionListener>> mappingsForCurrentEvent = registeredEvents.get(eventName);
-			// make sure pluginId is not null
-			if (pluginId == null) {
+		
+		// this is separated into a helper in case we split the event data structure into another class
+		public boolean registerEvent(String eventName, String pluginId, ActionListener al) {
+			//make sure eventName is valid
+			if (eventName == null || !data.containsKey(eventName)) {
 				return false;
+			} else {
+				HashMap<String, ArrayList<ActionListener>> mappingsForCurrentEvent = data.get(eventName);
+				// make sure pluginId is not null
+				if (pluginId == null) {
+					return false;
+				}
+				// if plugin does not have entry here, create it
+				if (!mappingsForCurrentEvent.containsKey(pluginId)) {
+					mappingsForCurrentEvent.put(pluginId, new ArrayList<ActionListener>());
+				}
+				// Add plugin's ActionListener
+				ArrayList<ActionListener> listenerList = mappingsForCurrentEvent.get(pluginId);
+				return listenerList.add(al); // should return true
 			}
-			// if plugin does not have entry here, create it
-			if (!mappingsForCurrentEvent.containsKey(pluginId)) {
-				mappingsForCurrentEvent.put(pluginId, new ArrayList<ActionListener>());
-			}
-			// Add plugin's ActionListener
-			ArrayList<ActionListener> listenerList = mappingsForCurrentEvent.get(pluginId);
-			return listenerList.add(al); // should return true
 		}
-	}
-	
-	private ArrayList<ActionListener> getListenersByEvent(String eventName) {
-		return null; // TODO implement
+		
+		public ArrayList<ActionListener> getListenersByEvent(String eventName) {
+			return null; // TODO implement
+		}
 	}
 	
 	public EventManager() {
 		// Set up default event types
 		// This is where they are defined, by the way
-		initEventType("theButtonEvent"); //TODO add more
+		eventRegistry.initEventType("theButtonEvent"); //TODO add more
 	}
 	
 	//TODO consider splitting class here
@@ -93,7 +97,7 @@ public class EventManager {
 	 * @return true if registration is successful, false otherwise
 	 */
 	public boolean registerEvent(String eventName, String pluginId, ActionListener action) {
-		return registerEventHelper(eventName, pluginId, action);
+		return eventRegistry.registerEvent(eventName, pluginId, action);
 	}
 	
 	/**
@@ -104,7 +108,7 @@ public class EventManager {
 	 * @return true if unregistration is successful, false otherwise
 	 */
 	public boolean unregisterEvent(String eventName, String pluginId) {
-		unregisterEventHelper(pluginId, eventName);
+		eventRegistry.unregisterEvent(pluginId, eventName);
 		return true;
 	}
 	
@@ -116,7 +120,7 @@ public class EventManager {
 	 * @return true if unregistration is successful, false otherwise
 	 */
 	public boolean unregisterPlugin(String pluginId) {
-		unregisterPluginHelper(pluginId);
+		eventRegistry.unregisterPlugin(pluginId);
 		return true;
 	}
 	

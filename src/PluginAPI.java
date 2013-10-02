@@ -37,8 +37,8 @@ public class PluginAPI {
 	 * @param eventName Event to remove listeners for
 	 * @return true if unregistration successful, false otherwise
 	 */
-	public boolean unRegisterEvent(String eventName) {
-		return em.unRegisterEvent(eventName, plugin.getId());
+	public boolean unregisterEvent(String eventName) {
+		return em.unregisterEvent(eventName, plugin.getId());
 	}
 	
 	/**
