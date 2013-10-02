@@ -8,7 +8,7 @@ import java.util.HashMap;
  * @author cooperra
  *
  */
-public class TestPlugin extends TemplatePlugin {
+public class TestPlugin implements IPlugin {
 
 	public String getId() {
 		return "TestPlugin";
@@ -32,6 +32,18 @@ public class TestPlugin extends TemplatePlugin {
 		});
 		return events;
 		
+	}
+
+	@Override
+	public boolean load() {
+		System.out.println("Hello, World!");
+		return false;
+	}
+
+	@Override
+	public boolean unload() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	

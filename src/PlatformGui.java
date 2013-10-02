@@ -3,10 +3,8 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-
 import javax.swing.*;
-import javax.swing.event.ListDataListener;
+
 
  class PlatformGui implements ActionListener {
 	 
@@ -16,10 +14,13 @@ import javax.swing.event.ListDataListener;
 	 private ListPanel PluginList;
 	 private JPanel container1;
 	 private JPanel container2;
+	 private int[] selectedPlguins;
+	 private PlugInLoader pluginLoader;
 	 
 	 
-	 public PlatformGui(){
+	 public PlatformGui(PlugInLoader PL ){
 	  
+	this.pluginLoader = PL;
 	   this.container1 = new JPanel();
 	 this.container2 = new JPanel();
 	   this.container1.setLayout(new BoxLayout(this.container1, BoxLayout.X_AXIS));
@@ -63,21 +64,21 @@ import javax.swing.event.ListDataListener;
 	 public ExecuteButton GetExecuteButton(){
 		 return this.button;
 	 }
+	 public int[] GetSelectedPlugins(){
+		 return this.PluginList.SendSelected();
+	 }
 
-   public static void main(String[] args) {
-      java.awt.EventQueue.invokeLater(new Runnable() {
-         public void run() {
-            PlatformGui g = new PlatformGui();
-            
-          
-         }
-      });
-   }
+   
+   
+
+ 
 @Override
 public void actionPerformed(ActionEvent e) {
-	this.status.writeToStatus("Hello World!! \n");
+	this.pluginLoader.runPlugins();
 }
 }
+ 
+ 
 
 @SuppressWarnings("serial")
 
@@ -93,7 +94,7 @@ class ExecuteButton extends JButton{
 @SuppressWarnings("serial")
 class ListPanel extends JScrollPane{
 	
-	   private static final int ST_WIDTH = 200;
+	   private static final int ST_WIDTH = 300;
 	   private static final int ST_HEIGHT = 500;
 	   private static final Color BACKGROUND_COLOR = Color.blue;
 	   private BufferedImage bImage = new BufferedImage(ST_WIDTH, ST_HEIGHT,
@@ -197,7 +198,7 @@ class STDrawPanel extends JPanel {
    protected void paintComponent(Graphics g) {
       super.paintComponent(g);
       g.drawImage(bImage, 0, 0, null);
-      
+
      
    }
 
