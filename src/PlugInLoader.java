@@ -38,8 +38,6 @@ public class PlugInLoader {
 		pluginDirectory = dir;
 		this.EM = EM;
 		findPlugins();
-		
-		
 	}
 	
 	public static String[] getNamesOfPlugins(){
