@@ -38,7 +38,7 @@ public class TestPlugin2 implements IPlugin {
 	@Override
 	public boolean load(PluginAPI api) {
 		api.getGUI().GetDrawPanel().getGraphics().setColor(Color.BLUE);
-		api.getGUI().GetDrawPanel().getGraphics().drawRect(200, 150, 300, 300);
+		api.getGUI().GetDrawPanel().getGraphics().drawRect(200, 150, 300, 30);
 		return false;
 	}
 

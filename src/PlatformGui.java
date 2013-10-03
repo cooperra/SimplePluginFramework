@@ -199,8 +199,10 @@ class STDrawPanel extends JPanel {
             BufferedImage.TYPE_INT_RGB);
 
     public void clear(){
-    	Graphics g = this.bImage.createGraphics();
-	
+    	 Graphics g = this.getGraphics();
+         g.setColor(BACKGROUND_COLOR);
+         g.fillRect(0, 0, ST_WIDTH, ST_HEIGHT);
+         g.dispose();
    }
 
    public STDrawPanel() {
