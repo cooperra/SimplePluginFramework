@@ -3,6 +3,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+
 import javax.swing.*;
 
 
@@ -10,12 +11,15 @@ import javax.swing.*;
 	 
 	 private STDrawPanel drawPanel;
 	 private ExecuteButton button;
+	 private JButton swapButton;
 	 private StatusPanel status;
 	 private ListPanel PluginList;
 	 private JPanel container1;
 	 private JPanel container2;
+	 private JPanel buttonContainer;
 	 private int[] selectedPlguins;
 	 private PlugInLoader pluginLoader;
+	 
 	 
 	 
 	 public PlatformGui(PlugInLoader PL ){
@@ -23,18 +27,44 @@ import javax.swing.*;
 	this.pluginLoader = PL;
 	   this.container1 = new JPanel();
 	 this.container2 = new JPanel();
+	 this.buttonContainer = new JPanel();
 	   this.container1.setLayout(new BoxLayout(this.container1, BoxLayout.X_AXIS));
 	   this.container2.setLayout(new BoxLayout(this.container2, BoxLayout.Y_AXIS));
+	   this.buttonContainer.setLayout(new BoxLayout(this.buttonContainer, BoxLayout.X_AXIS));
+	   
+	   
 	   this.drawPanel = new STDrawPanel();
       this.button = new ExecuteButton();
-      
+      this.swapButton = new JButton("Swap selected");
+      this.buttonContainer.add(button);
+      this.buttonContainer.add(this.swapButton);
+     
       this.button.addActionListener(this);
+      this.swapButton.addActionListener( new ActionListener(){
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			
+			int[] sel = GetListPanel().SendSelected();
+			if(sel.length != 2){
+				GetStatusPanel().writeToStatus("You must select 2 Plugins!");
+				
+			}else{
+				
+				pluginLoader.swapPlugins(sel[0], sel[1]);
+			}
+			
+			
+			
+		}
+    	  
+      });
        this.status = new StatusPanel();
       
  
       this.PluginList = new ListPanel();
       this.container2.add(drawPanel);
-      this.container2.add(button);
+      this.container2.add(this.buttonContainer);
       this.container1.add(PluginList);
       this.container1.add(this.container2);
        this.container1.add(status);
@@ -204,6 +234,13 @@ class STDrawPanel extends JPanel {
          g.fillRect(0, 0, ST_WIDTH, ST_HEIGHT);
          g.dispose();
    }
+    
+    public Graphics SetColor(Color c){
+    	Graphics g = this.bImage.getGraphics();
+    	g.setColor(c);
+    	
+    	return g;
+    }
 
    public STDrawPanel() {
       Graphics g = bImage.getGraphics();

@@ -24,6 +24,9 @@ public class PlugInLoader {
 		
 		listOfPlugins.set(position2, tempPlugin);
 		pluginIsOn.set(position2, tempOnOff);
+		
+		GUI.GetListPanel().updateList(getNamesOfPlugins());
+		
 	}
 
 	public static ArrayList<IPlugin> getPlugins(){

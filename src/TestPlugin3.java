@@ -10,10 +10,10 @@ import java.util.HashMap;
  * @author cooperra
  *
  */
-public class TestPlugin2 implements IPlugin {
+public class TestPlugin3 implements IPlugin {
 
 	public String getId() {
-		return "Draw Blue Rectangle";
+		return "Draw Red Rectangle";
 	}
 
 	public String getVersion() {
@@ -39,8 +39,8 @@ public class TestPlugin2 implements IPlugin {
 	@Override
 	public boolean load(PluginAPI api) {
 	Graphics g = api.getGUI().GetDrawPanel().getGraphics();
-	g.setColor(Color.BLUE);
-	g.fillRect(100, 100, 300, 30);
+	g.setColor(Color.RED);
+	g.fillRect(105, 105, 305, 35);
 		
 	
 		
