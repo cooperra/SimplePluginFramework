@@ -14,6 +14,17 @@ public class PlugInLoader {
 	private static String pluginDirectory;
 	private static PlatformGui GUI;
 	private static EventManager EM;
+	
+	public static void swapPlugins(int position1, int position2){
+		IPlugin tempPlugin = listOfPlugins.get(position1);
+		Boolean tempOnOff = pluginIsOn.get(position1);
+		
+		listOfPlugins.set(position1, listOfPlugins.get(position2));
+		pluginIsOn.set(position1, pluginIsOn.get(position2));
+		
+		listOfPlugins.set(position2, tempPlugin);
+		pluginIsOn.set(position2, tempOnOff);
+	}
 
 	public static ArrayList<IPlugin> getPlugins(){
 		return listOfPlugins;
