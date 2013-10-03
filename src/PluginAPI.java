@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 public class PluginAPI {
 	private IPlugin plugin;
 	private EventManager em;
-	private /*TODO*/Object ui;
+	private PlatformGui ui;
 	
 	/**
 	 * One PluginAPI object is created per plugin
@@ -14,7 +14,7 @@ public class PluginAPI {
 	 * @param em
 	 * @param ui
 	 */
-	public PluginAPI(IPlugin plugin, EventManager em, /*TODO*/Object ui) {
+	public PluginAPI(IPlugin plugin, EventManager em, PlatformGui ui) {
 		this.plugin = plugin;
 		this.em = em;
 		this.ui = ui;
@@ -56,6 +56,11 @@ public class PluginAPI {
 	 */
 	public void displayStatus(String status) {
 		//TODO ui.statusbar.setText(status);
+	}
+	
+	public PlatformGui getGUI(){
+		
+		return ui;
 	}
 	
 }

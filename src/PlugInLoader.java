@@ -11,12 +11,33 @@ public class PlugInLoader {
 	
 	private static ArrayList<IPlugin> listOfPlugins = new ArrayList<IPlugin>();
 	private static String pluginDirectory;
-	
+	private static PlatformGui GUI;
+	private static EventManager EM;
+
 	public static ArrayList<IPlugin> getPlugins(){
 		return listOfPlugins;
 	}
 	
-	public static void findPlugins(){
+	
+	public PlugInLoader(EventManager EM, String dir){
+		pluginDirectory = dir;
+		this.EM = EM;
+		findPlugins();
+		
+		
+	}
+	
+	public static String[] getNamesOfPlugins(){
+		String[] returnArray = new String[listOfPlugins.size()];
+		
+		for (int i = 0; i < listOfPlugins.size(); i++) {
+			returnArray[i] = listOfPlugins.get(i).getId();
+		}
+		
+		return returnArray;
+	}
+	
+	public static Boolean findPlugins(){
 		System.out.println(System.getProperty("user.dir") + File.separator + pluginDirectory);
 		File dir = new File(System.getProperty("user.dir") + File.separator + pluginDirectory);
 		ClassLoader cl = new PluginClassLoader(dir);
@@ -41,14 +62,23 @@ public class PlugInLoader {
 						}
 					} catch (Exception ex) {
 						System.err.println("File " + files[i] + " does not contain a valid PluginFunction class.");
+						return false;
 					}				
 				}
 			}else{
 				System.out.println("File is not a directory");
+				return false;
 			}
 		}else{
 			System.out.println("Directory does not exist");
+			return false;
 		}
+		
+		if(listOfPlugins.isEmpty()){
+			System.out.println("There are no plugins");
+			return false;
+		}
+		return true;
 	}
 	
 	public static void runPlugins() {
@@ -60,9 +90,15 @@ public class PlugInLoader {
 		}
 	}
 	
+	public void receiveGUI(PlatformGui GUI){
+		this.GUI = GUI;
+	
+		
+	}
+	
 	public static void runPlugin(IPlugin pf) {
 		try {
-			PluginAPI api = new PluginAPI(pf, /*TODO get reference to EventManager*/null, /*TODO get reference to PlatformGui*/null);
+			PluginAPI api = new PluginAPI(pf, EM, GUI);
 			pf.load(api);
 			/*System.out.print(pf.getPluginName());
 			System.out.print(" ( "+count+" ) = ");*/
@@ -226,17 +262,13 @@ public class PlugInLoader {
 		return listOfPlugins;
 	}*/
 	
-	public static void main(String[] args) throws IOException {
+	/*public static void main(String[] args) throws IOException {
 
-		pluginDirectory = "bin";
 		findPlugins();
 		
-		if(listOfPlugins.isEmpty()){
-			System.out.println("There are no plugins");
-			return;
-		}
+
 		
-		runPlugins();
+		runPlugins();*/
 		
 		//System.out.println(System.getProperty("user.dir"));
 		
@@ -246,6 +278,6 @@ public class PlugInLoader {
 		for(String[] s : listOfPlugins){
 			System.out.println(s[0]);
 		}*/
-	}
+	/*}*/
 
 }

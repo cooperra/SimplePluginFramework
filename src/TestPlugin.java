@@ -36,7 +36,7 @@ public class TestPlugin implements IPlugin {
 
 	@Override
 	public boolean load(PluginAPI api) {
-		System.out.println("Hello, World!");
+		api.getGUI().GetStatusPanel().writeToStatus("Hello World!");
 		return false;
 	}
 
