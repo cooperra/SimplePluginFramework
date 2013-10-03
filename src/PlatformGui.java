@@ -74,6 +74,16 @@ import javax.swing.*;
  
 @Override
 public void actionPerformed(ActionEvent e) {
+	
+	this.GetDrawPanel().clear();
+
+	
+
+	this.pluginLoader.turnAllPluginsOff();
+	int[] selected = this.GetListPanel().SendSelected();
+	for (int i : selected) {
+		pluginLoader.turnPluginOn(i);
+	}
 	this.pluginLoader.runPlugins();
 }
 }
@@ -144,6 +154,7 @@ class ListPanel extends JScrollPane{
 		   return this.list.getSelectedIndices();
 		   
 	   }
+	
 	   
 	   @Override
 	   protected void paintComponent(Graphics g) {
@@ -181,11 +192,16 @@ class STDrawPanel extends JPanel {
    private static final Color BACKGROUND_COLOR = Color.white;
  
  
+   
+
 
    private BufferedImage bImage = new BufferedImage(ST_WIDTH, ST_HEIGHT,
             BufferedImage.TYPE_INT_RGB);
 
- 
+    public void clear(){
+    	Graphics g = this.bImage.createGraphics();
+	
+   }
 
    public STDrawPanel() {
       Graphics g = bImage.getGraphics();

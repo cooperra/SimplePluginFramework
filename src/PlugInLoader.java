@@ -10,6 +10,7 @@ import java.util.Iterator;
 public class PlugInLoader {
 	
 	private static ArrayList<IPlugin> listOfPlugins = new ArrayList<IPlugin>();
+	private static ArrayList<Boolean> pluginIsOn = new ArrayList<Boolean>();
 	private static String pluginDirectory;
 	private static PlatformGui GUI;
 	private static EventManager EM;
@@ -57,6 +58,7 @@ public class PlugInLoader {
 								// the following line assumes that PluginFunction has a no-argument constructor
 								IPlugin ip = (IPlugin) c.newInstance();
 								listOfPlugins.add(ip);
+								pluginIsOn.add(false);
 								continue;
 							}
 						}
@@ -83,11 +85,17 @@ public class PlugInLoader {
 	
 	public static void runPlugins() {
 
-		Iterator<IPlugin> iter = listOfPlugins.iterator();
+		for(int i = 0; i < listOfPlugins.size(); i++){
+			if(pluginIsOn.get(i)){
+				IPlugin pf = listOfPlugins.get(i);
+				runPlugin(pf);
+			}
+		}
+		/*Iterator<IPlugin> iter = listOfPlugins.iterator();
 		while (iter.hasNext()) {
 			IPlugin pf = iter.next();
 			runPlugin(pf);
-		}
+		}*/
 	}
 	
 	public void receiveGUI(PlatformGui GUI){
@@ -138,57 +146,42 @@ public class PlugInLoader {
 	/*
 	 * Turns a single plugin off and returns true if it works, false otherwise
 	 */
+
 	
-	/*public static Boolean turnPluginOff(int position){
-		//Include way to check if any others are dependent
-		String[] plugin = listOfPlugins.get(position);
-		plugin[1] = "off";
-		listOfPlugins.set(position, plugin);
-		return true;
-	}*/
+	public static void turnPluginOff(int position){
+		pluginIsOn.set(position,false);
+	}
 	
 	/*
 	 * Turns a single plugin on and returns true if it works, false otherwise
 	 */
 	
-	/*public static Boolean turnPluginOn(int position){
+	public static void turnPluginOn(int position){
 		//Include way to check if any others depend on it
-		String[] plugin = listOfPlugins.get(position);
-		plugin[1] = "on";
-		listOfPlugins.set(position, plugin);
-		return true;
-	}*/
+		pluginIsOn.set(position,true);
+	}
 	
 	/*
 	 * Turns all plugins off and returns true if all plugins turned off properly
 	 * False otherwise
 	 */
 	
-	/*public static Boolean turnAllPluginsOff(){
+	public static void turnAllPluginsOff(){
 		for(int i = 0; i < listOfPlugins.size(); i++){
-			//Include way to check if any others are dependent
-			String[] plugin = listOfPlugins.get(i);
-			plugin[1] = "off";
-			listOfPlugins.set(i, plugin);
+			pluginIsOn.set(i, false);
 		}
 
-		return true;
-	}*/
+	}
 	
 	/*
 	 * Turns all plugins on and returns the new list of plugins
 	 */
 	
-	/*public static Boolean turnAllPluginsOn(){
+	public static void turnAllPluginsOn(){
 		for(int i = 0; i < listOfPlugins.size(); i++){
-			//Include way to check if any others depend on it
-			String[] plugin = listOfPlugins.get(i);
-			plugin[1] = "on";
-			listOfPlugins.set(i, plugin);
+			pluginIsOn.set(i, true);
 		}
-
-		return true;
-	}*/
+	}
 
 	/*
 	 * Does all of the adding to the plugin list stuff
